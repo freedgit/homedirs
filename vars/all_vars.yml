@@ -1,0 +1,45 @@
+do_precreate_dirs: true
+do_manual_sync: true
+the_domain: "local.dot.com"
+method_direct: false
+
+the_nameserver: 192.168.0.1
+
+all_users:
+  corp:
+    method: corp    
+    name: Corp User
+    email: "corp@{{ the_domain }}"
+    user: user1
+    git_committer: user1
+    smtp_server: "smtp.personal.{{ the_domain }}"
+    smtp_password: fakepassword1
+    smtp_port: 465
+  personal:
+    method: personal
+    win_user: user1
+    name: Personal User
+    email: "personal@{{ the_domain }}"
+    user: user2
+    git_committer: user2
+    smtp_server: "smtp.corp.{{ the_domain }}"
+    smtp_password: fakepassword2
+    smtp_port: 456
+
+timestamp: "{{ ansible_date_time.date }} {{ ansible_date_time.time }}"
+
+the_templates:
+  dot-vimrc: .vimrc
+  dot-gitconfig: .gitconfig
+  dot-msmtprc: .msmtprc
+  dot-bashrc: .bashrc
+
+precreate_manual_sync:
+  - .vim
+  - .irssi
+  - src
+  - bin
+  - .fonts
+
+manual_sync:
+  .fonts/: .fonts

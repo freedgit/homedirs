@@ -1,0 +1,17 @@
+defaults
+
+logfile ~/.msmtp.log
+tls on
+tls_starttls on
+tls_certcheck off
+tls_certcheck on
+auth on
+
+account the_account
+host {{ ids.smtp_server }}
+port {{ ids.smtp_port }}
+from {{ ids.email }}
+user {{ ids.user }}
+password {{ ids.smtp_password }}
+
+account default : the_account

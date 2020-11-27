@@ -1,0 +1,6 @@
+---
+- name: set a sample resolvconf
+  template:
+    src: etc/resolv.conf
+    dest: /etc/resolv.conf.sample
+  tags: personal

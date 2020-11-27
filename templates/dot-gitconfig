@@ -1,0 +1,24 @@
+[user]
+	name = {{ ids.git_committer }}
+	email = {{ ids.email }}
+
+[push]
+	default = simple
+
+[diff]
+	tool = vimdiff
+
+[difftool "ediffclient"]
+	cmd = emacsclient --eval \"(ediff-files \\\"$LOCAL\\\" \\\"$REMOTE\\\")\"
+
+[difftool]
+	prompt = false
+
+[alias]
+	d = difftool
+
+[merge]
+	tool = vimdiff
+
+[http]
+    sslVerify = false

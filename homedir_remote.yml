@@ -1,0 +1,18 @@
+---
+- hosts: the_computers
+  vars_files:
+    - vars/all_vars.yml
+    
+  tasks:
+    - name: define personal name
+      set_fact:
+        ids: "{{ all_users.personal }}"
+      tags: personal
+    
+    - name: include repeated tasks
+      import_tasks: all-tasks.yml
+      tags: personal
+      
+    - name: include other host tasks
+      import_tasks: direct-tasks.yml
+      tags: personal

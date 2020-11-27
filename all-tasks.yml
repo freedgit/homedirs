@@ -1,0 +1,50 @@
+---
+- name: makes sure final directory exists
+  file:
+    path: "{{ final_path }}"
+    state: directory
+    recurse: yes
+        
+- name: add timestamp to changelog
+  lineinfile:
+    path: "{{ final_path }}/.changelog.log"
+    create: yes
+    line: "{{ timestamp }}"
+    insertbefore: EOF
+  tags: corp,personal
+      
+- name: precreate dirs for manual sync
+  file:
+    path: "{{ final_path }}/{{ item }}"
+    state: directory
+    recurse: yes
+  with_items: "{{ precreate_manual_sync }}"
+  tags: corp,personal
+  when: do_precreate_dirs
+
+- name: debug
+  debug:
+    msg: "{{ ids }}"
+
+- name: set authorship plus timestamp
+  set_fact:
+    author: "Author: {{ ids.name }} ({{ ids.email }})"
+  tags: corp,personal
+
+- name: templatelize all the things
+  template:
+    src: "{{ item.key }}"
+    dest: "{{ final_path }}/{{ item.value }}"
+  with_items:
+    - "{{ lookup('dict', the_templates) }}"
+  tags: corp,personal
+
+- name: manual sync
+  synchronize:
+    src: "templates/{{ item.key }}"
+    dest: "{{ final_path }}/{{ item.value }}"
+    recursive: yes
+  with_items:
+    - "{{ lookup('dict', manual_sync) }}"
+  tags: corp,personal
+  when: do_manual_sync
